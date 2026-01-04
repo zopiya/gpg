@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' 'sha256-RtPltr/k8NGbRP06qCasHGcXTpWpe+CCo5ghYLbKrk4=' 'sha256-wRoZ8WbDuu0auzoOckB1qib9MXLV4CMAlPwzkC8qXak='; style-src 'self' 'unsafe-inline' 'sha256-OMSHi41z76pRrYFOawXtWM8ZSLM555ctMH2kxqc/VjI='; img-src 'self' data:; connect-src 'self'; worker-src 'self' blob:;">
+    <title>Secure Message Encryption | GPG Online</title>
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%232563EB%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22 ry=%222%22></rect><path d=%22M7 11V7a5 5 0 0 1 10 0v4%22></path></svg>">
+
+    <link rel="stylesheet" href="assets/css/style.css" integrity="sha256-OMSHi41z76pRrYFOawXtWM8ZSLM555ctMH2kxqc/VjI=" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Step 0: Identity -->
+    <div class="card step-0">
+
+        <!-- Manual Load Area -->
+        <div id="manual-load-area" class="manual-load-area">
+            <div class="error-title">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                <span data-i18n="error_load_title">Unable to Auto-load Public Key</span>
+            </div>
+            <div class="error-desc" data-i18n="error_load_desc">May be due to missing file or local security policy (CORS). Please manually load the `public.asc` file.</div>
+            <div class="manual-input-row">
+                <input type="file" id="key-file-input" accept=".asc,.txt" style="display: none;">
+                <button class="btn-xs" id="btn-select-file" data-i18n="btn_select_file">📁 Select File...</button>
+                <div style="font-size: 12px; display: flex; align-items: center; color: var(--text-secondary);" data-i18n="text_or_paste">or directly paste into console</div>
+            </div>
+        </div>
+
+        <div id="key-content" class="step-0-inner" style="opacity: 0.5; pointer-events: none;">
+            <div class="identity-header">
+                <span class="identity-title" data-i18n="step0_title">Recipient Public Key</span>
+                <div class="tag-badge" id="key-algo-badge" data-i18n="step0_waiting">WAITING...</div>
+            </div>
+
+            <!-- Main Fingerprint -->
+            <div class="fingerprint-main" id="key-fingerprint-main">
+                .... .... .... ....
+            </div>
+
+            <div class="actions-row">
+                <button class="btn-link" id="details-btn" aria-expanded="false" disabled>
+                    <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    <span data-i18n="btn_details">View Details</span>
+                </button>
+                <a href="./public.asc" class="btn-link" download="public.asc">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span data-i18n="btn_download">Download Public Key</span>
+                </a>
+            </div>
+
+            <!-- Details Panel -->
+            <div class="details-wrapper" id="details-panel">
+                <div class="details-content">
+                    <div class="detail-item">
+                        <span class="detail-label" data-i18n="label_userid">User ID:</span>
+                        <span class="detail-value" id="key-userid">--</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label" data-i18n="label_fingerprint">Full Fingerprint:</span>
+                        <span class="detail-value" id="key-fingerprint-full">--</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label" data-i18n="label_algo">Algorithm:</span>
+                        <span class="detail-value" id="key-algo-detail">--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 1: Input -->
+    <div class="card step-1" id="step-1-card">
+        <div class="step-title">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+            <span data-i18n="step1_title">Compose Secret Message</span>
+
+            <span class="archived-msg">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span data-i18n="text_msg_encrypted">Encrypted</span>
+            </span>
+        </div>
+
+        <div class="input-wrapper">
+            <textarea id="msg-input" data-i18n="placeholder_msg" placeholder="Enter content here, or drag and drop a text file...&#10;All encryption is done locally." disabled></textarea>
+            <button id="encrypt-btn" class="btn-primary" disabled data-i18n="btn_encrypt">Encrypt Message</button>
+        </div>
+    </div>
+
+    <!-- Step 2: Result -->
+    <div class="card step-2" id="step-2-card">
+        <div class="step-title" style="color: var(--green-accent);">
+            <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span data-i18n="step2_title">Encryption Complete</span>
+        </div>
+
+        <div class="result-area" id="result-output"></div>
+
+        <div class="result-actions">
+            <button class="btn-secondary" id="btn-copy">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span data-i18n="btn_copy">Copy Ciphertext</span>
+            </button>
+            <a href="#" id="mailto-btn" class="btn-secondary">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <span data-i18n="btn_email">Send via Email</span>
+            </a>
+        </div>
+
+        <div class="reset-link" id="link-reset" data-i18n="link_reset">
+            Return to Edit or Rewrite
+        </div>
+    </div>
+
+    <div class="footer" data-i18n="footer">
+        Powered by OpenPGP.js | Single-File Secure Tool
+    </div>
+
+</div>
+
+<!-- Dependencies -->
+<script src="assets/js/openpgp.min.js" integrity="sha256-RtPltr/k8NGbRP06qCasHGcXTpWpe+CCo5ghYLbKrk4=" crossorigin="anonymous"></script>
+<script src="assets/js/app.js" integrity="sha256-wRoZ8WbDuu0auzoOckB1qib9MXLV4CMAlPwzkC8qXak=" crossorigin="anonymous"></script>
+
+</body>
+</html>
