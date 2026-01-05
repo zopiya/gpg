@@ -1,4 +1,4 @@
-const CACHE_NAME = "gpg-online-v1";
+const CACHE_NAME = "gpg-online-v20260105164950";
 const ASSETS = [
   "./",
   "./index.html",
@@ -6,6 +6,7 @@ const ASSETS = [
   "./assets/js/app.js",
   "./assets/js/openpgp.min.js",
   "./public.asc",
+  "./assets/manifest.json",
 ];
 
 // Install Service Worker
@@ -30,11 +31,11 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// Fetch Strategy: Cache First, then Network
+// Fetch Strategy: Network First, then Cache (Offline Fallback)
 self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
+    fetch(event.request).catch(() => {
+      return caches.match(event.request);
     })
   );
 });

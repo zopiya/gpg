@@ -6,9 +6,9 @@ An ultra-secure, zero-dependency (locally), zero-threshold online GPG encryption
 
 - **Local Encryption:** All cryptographic operations are performed locally in the browser using [OpenPGP.js](https://openpgpjs.org/). Your plain text never leaves your machine.
 - **Strict Security:**
-    - **Subresource Integrity (SRI):** All CSS and JS files are verified with SHA256 hashes.
-    - **Content Security Policy (CSP):** A robust CSP prevents XSS and unauthorized script execution.
-    - **No Inline Scripts:** Zero inline event handlers to comply with strict security standards.
+  - **Subresource Integrity (SRI):** All CSS and JS files are verified with SHA256 hashes.
+  - **Content Security Policy (CSP):** A robust CSP prevents XSS and unauthorized script execution.
+  - **No Inline Scripts:** Zero inline event handlers to comply with strict security standards.
 - **Multilingual Support:** Automatically detects browser language (supports English and Chinese).
 - **Clean UI:** Modern, responsive design with dark mode support.
 - **Integrity Verified:** Includes a build script to synchronize security hashes across the project.
@@ -22,10 +22,12 @@ An ultra-secure, zero-dependency (locally), zero-threshold online GPG encryption
 ├── assets/
 │   ├── css/
 │   │   └── style.css   # Application styles
-│   └── js/
-│       ├── app.js      # Application logic & i18n
-│       └── openpgp.min.js # OpenPGP.js library (v6.3.0)
+│   ├── js/
+│   │   ├── app.js      # Application logic & i18n
+│   │   └── openpgp.min.js # OpenPGP.js library (v6.3.0)
+│   └── manifest.json   # PWA Manifest
 ├── build.py            # Integrity synchronization script
+├── sw.js               # Service Worker
 └── README.md           # Documentation
 ```
 
@@ -43,11 +45,13 @@ The following hashes are automatically updated by `build.py`:
 | File | SHA256 Hash (Base64) |
 | :--- | :--- |
 | public.asc | `sha256-E/F+NeOddP9mNILlC0/AdlosHXs7DO84bJs03e61oDQ=` |
-| assets/js/app.js | `sha256-bC0WEugKPnnIvCwmo52QH1+lYCg/VWfOBI/EJIyiR5s=` |
+| assets/js/app.js | `sha256-PA0HZjDZ/NT/EZi1ewWECf9Ei/7KjW9j5L/FZbTiGb8=` |
 | assets/js/openpgp.min.js | `sha256-RtPltr/k8NGbRP06qCasHGcXTpWpe+CCo5ghYLbKrk4=` |
 | assets/css/style.css | `sha256-Hv+LnSPv7p29SMMfFHXyJuMRlDzSPYvuoIn+UyUxdUI=` |
+| sw.js | `sha256-2XYCycmg3H2Ui2eJTNI5wRjxAKW6MjxEDX3d5jKsDDA=` |
+| assets/manifest.json | `sha256-dG6QD9EysgJD6999mDr7VeCJ2F2PUO1WbY7u2Hki9Do=` |
 
-*Last updated: 2026-01-05 16:23:31*
+*Last updated: 2026-01-05 16:49:50*
 <!-- HASH_END -->
 
 ## License

@@ -75,6 +75,28 @@ def update_index_html(app_hash, lib_hash, style_hash):
     print(f"Updated {file_path}")
 
 
+def update_sw_js():
+    """Update cache version in sw.js."""
+    file_path = "sw.js"
+    if not os.path.exists(file_path):
+        return
+
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    # Generate a version string based on timestamp
+    version = datetime.now().strftime("%Y%m%d%H%M%S")
+    new_content = re.sub(
+        r'const CACHE_NAME = ".*?";',
+        f'const CACHE_NAME = "gpg-online-v{version}";',
+        content,
+    )
+
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(new_content)
+    print(f"Updated {file_path} with version {version}")
+
+
 def update_readme(hashes):
     """Update hashes in README.md."""
     file_path = "README.md"
@@ -109,9 +131,18 @@ def main():
         hashes["public.asc"] = get_sha256_hash("public.asc")
         update_app_js(hashes["public.asc"])
 
+    # Update Service Worker cache name to force refresh
+    update_sw_js()
+
     hashes["assets/js/app.js"] = get_sha256_hash("assets/js/app.js")
     hashes["assets/js/openpgp.min.js"] = get_sha256_hash("assets/js/openpgp.min.js")
     hashes["assets/css/style.css"] = get_sha256_hash("assets/css/style.css")
+
+    if os.path.exists("sw.js"):
+        hashes["sw.js"] = get_sha256_hash("sw.js")
+
+    if os.path.exists("assets/manifest.json"):
+        hashes["assets/manifest.json"] = get_sha256_hash("assets/manifest.json")
 
     update_index_html(
         hashes["assets/js/app.js"],
