@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' 'sha256-RtPltr/k8NGbRP06qCasHGcXTpWpe+CCo5ghYLbKrk4=' 'sha256-5VX5IaKPiVFKtaHAPNYmySg2sxn7RRgCxf+nZusmwVI='; style-src 'self' 'unsafe-inline' 'sha256-OMSHi41z76pRrYFOawXtWM8ZSLM555ctMH2kxqc/VjI='; img-src 'self' data:; connect-src 'self'; worker-src 'self' blob:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' 'sha256-RtPltr/k8NGbRP06qCasHGcXTpWpe+CCo5ghYLbKrk4=' 'sha256-bC0WEugKPnnIvCwmo52QH1+lYCg/VWfOBI/EJIyiR5s='; style-src 'self' 'unsafe-inline' 'sha256-Hv+LnSPv7p29SMMfFHXyJuMRlDzSPYvuoIn+UyUxdUI='; img-src 'self' data:; connect-src 'self'; worker-src 'self' blob:;">
     <title>Secure Message Encryption | GPG Online</title>
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%232563EB%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2211%22 width=%2218%22 height=%2211%22 rx=%222%22 ry=%222%22></rect><path d=%22M7 11V7a5 5 0 0 1 10 0v4%22></path></svg>">
+    <link rel="manifest" href="manifest.json">
 
-    <link rel="stylesheet" href="assets/css/style.css" integrity="sha256-OMSHi41z76pRrYFOawXtWM8ZSLM555ctMH2kxqc/VjI=" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/style.css" integrity="sha256-Hv+LnSPv7p29SMMfFHXyJuMRlDzSPYvuoIn+UyUxdUI=" crossorigin="anonymous">
 </head>
 <body>
 
@@ -96,14 +97,18 @@
         <div class="step-title" style="color: var(--green-accent);">
             <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
             <span data-i18n="step2_title">Encryption Complete</span>
+
+            <button class="btn-copy-icon" id="btn-copy" title="Copy Ciphertext" aria-label="Copy encrypted message">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
         </div>
 
         <div class="result-area" id="result-output"></div>
 
         <div class="result-actions">
-            <button class="btn-secondary" id="btn-copy">
-                <svg class="icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                <span data-i18n="btn_copy">Copy Ciphertext</span>
+            <button class="btn-secondary" id="btn-save">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span data-i18n="btn_save">Save File</span>
             </button>
             <a href="#" id="mailto-btn" class="btn-secondary">
                 <svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
@@ -124,7 +129,7 @@
 
 <!-- Dependencies -->
 <script src="assets/js/openpgp.min.js" integrity="sha256-RtPltr/k8NGbRP06qCasHGcXTpWpe+CCo5ghYLbKrk4=" crossorigin="anonymous"></script>
-<script src="assets/js/app.js" integrity="sha256-5VX5IaKPiVFKtaHAPNYmySg2sxn7RRgCxf+nZusmwVI=" crossorigin="anonymous"></script>
+<script src="assets/js/app.js" integrity="sha256-bC0WEugKPnnIvCwmo52QH1+lYCg/VWfOBI/EJIyiR5s=" crossorigin="anonymous"></script>
 
 </body>
 </html>

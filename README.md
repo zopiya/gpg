@@ -43,11 +43,11 @@ The following hashes are automatically updated by `build.py`:
 | File | SHA256 Hash (Base64) |
 | :--- | :--- |
 | public.asc | `sha256-E/F+NeOddP9mNILlC0/AdlosHXs7DO84bJs03e61oDQ=` |
-| assets/js/app.js | `sha256-5VX5IaKPiVFKtaHAPNYmySg2sxn7RRgCxf+nZusmwVI=` |
+| assets/js/app.js | `sha256-bC0WEugKPnnIvCwmo52QH1+lYCg/VWfOBI/EJIyiR5s=` |
 | assets/js/openpgp.min.js | `sha256-RtPltr/k8NGbRP06qCasHGcXTpWpe+CCo5ghYLbKrk4=` |
-| assets/css/style.css | `sha256-OMSHi41z76pRrYFOawXtWM8ZSLM555ctMH2kxqc/VjI=` |
+| assets/css/style.css | `sha256-Hv+LnSPv7p29SMMfFHXyJuMRlDzSPYvuoIn+UyUxdUI=` |
 
-*Last updated: 2026-01-05 14:32:48*
+*Last updated: 2026-01-05 16:23:31*
 <!-- HASH_END -->
 
 ## License

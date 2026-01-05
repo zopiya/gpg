@@ -284,6 +284,31 @@ textarea:disabled {
     opacity: 0.7;
 }
 
+.btn-copy-icon {
+    margin-left: auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s var(--easing);
+    color: var(--text-secondary);
+}
+
+.btn-copy-icon:hover {
+    border-color: var(--green-accent);
+    color: var(--green-accent);
+    background: var(--green-bg);
+}
+
+.btn-copy-icon .icon {
+    width: 18px;
+    height: 18px;
+}
+
 .btn-primary {
     background-color: var(--text-primary);
     color: var(--bg-page);

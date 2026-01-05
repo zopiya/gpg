@@ -17,6 +17,7 @@ const I18N = {
     step2_title: "Encryption Complete",
     btn_copy: "Copy Ciphertext",
     btn_email: "Send via Email",
+    btn_save: "Save File",
     link_reset: "Return to Edit or Rewrite",
     footer: "Powered by OpenPGP.js | Single-File Secure Tool",
     error_load_title: "Unable to Auto-load Public Key",
@@ -32,6 +33,8 @@ const I18N = {
     text_msg_encrypted: "Encrypted",
     alert_integrity_fail:
       "Security Warning: Public key file integrity check failed!",
+    alert_email_too_long:
+      "The message is too long for email. Please use 'Save File' or 'Copy' instead.",
   },
   zh: {
     page_title: "安全讯息加密",
@@ -50,6 +53,7 @@ const I18N = {
     step2_title: "加密完成",
     btn_copy: "复制密文",
     btn_email: "发送邮件",
+    btn_save: "保存文件",
     link_reset: "返回修改或重新编写",
     footer: "由 OpenPGP.js 驱动",
     error_load_title: "无法自动加载公钥",
@@ -64,6 +68,8 @@ const I18N = {
     btn_copied: "已复制",
     text_msg_encrypted: "已加密",
     alert_integrity_fail: "安全警告：公钥文件完整性校验失败！",
+    alert_email_too_long:
+      "内容过长，可能无法通过邮件发送。建议使用“保存文件”或“复制”功能。",
   },
 };
 
@@ -95,6 +101,7 @@ const ids = {
   btnCopy: "btn-copy",
   linkReset: "link-reset",
   btnSelectFile: "btn-select-file",
+  btnSave: "btn-save",
 };
 
 function getEl(id) {
@@ -240,6 +247,11 @@ function attachEventListeners() {
   const linkReset = getEl(ids.linkReset);
   if (linkReset) {
     linkReset.addEventListener("click", resetProcess);
+  }
+
+  const btnSave = getEl(ids.btnSave);
+  if (btnSave) {
+    btnSave.addEventListener("click", () => saveResult(btnSave));
   }
 }
 
@@ -404,9 +416,18 @@ async function doEncrypt() {
 
     const subject = encodeURIComponent("Encrypted Message");
     const body = encodeURIComponent(encryptedData);
-    getEl(
-      ids.mailtoBtn
-    ).href = `mailto:${email}?subject=${subject}&body=${body}`;
+    const mailtoUrl = `mailto:${email}?subject=${subject}&body=${body}`;
+
+    const mailtoBtn = getEl(ids.mailtoBtn);
+    if (mailtoUrl.length > 2000) {
+      mailtoBtn.href = "javascript:void(0)";
+      mailtoBtn.onclick = () => alert(I18N[currentLang].alert_email_too_long);
+      mailtoBtn.style.opacity = "0.5";
+    } else {
+      mailtoBtn.href = mailtoUrl;
+      mailtoBtn.onclick = null;
+      mailtoBtn.style.opacity = "1";
+    }
 
     getEl(ids.step1Card).classList.add("archived");
     getEl(ids.step2Card).style.display = "block";
@@ -442,6 +463,7 @@ function copyResult(btn) {
   const originalContent = btn.innerHTML;
   const originalColor = btn.style.color;
   const originalBorder = btn.style.borderColor;
+  const originalBackground = btn.style.background;
 
   navigator.clipboard
     .writeText(text)
@@ -449,12 +471,18 @@ function copyResult(btn) {
       btn.style.borderColor = "var(--green-accent)";
       btn.style.color = "var(--green-accent)";
       btn.style.background = "var(--green-bg)";
-      btn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> ${I18N[currentLang].btn_copied}`;
+
+      // If it's the icon-only button, we just change the icon briefly
+      if (btn.classList.contains("btn-copy-icon")) {
+        btn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+      } else {
+        btn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> ${I18N[currentLang].btn_copied}`;
+      }
 
       setTimeout(() => {
         btn.style.borderColor = originalBorder;
         btn.style.color = originalColor;
-        btn.style.background = "";
+        btn.style.background = originalBackground;
         btn.innerHTML = originalContent;
       }, 2000);
     })
@@ -463,4 +491,35 @@ function copyResult(btn) {
     });
 }
 
+function saveResult(btn) {
+  const text = getEl(ids.resultOutput).innerText;
+  const blob = new Blob([text], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "encrypted-message.txt";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 document.addEventListener("DOMContentLoaded", init);
+
+// Security: Clear sensitive data on page unload
+window.addEventListener("beforeunload", () => {
+  const msgInput = getEl(ids.msgInput);
+  if (msgInput) msgInput.value = "";
+  const resultOutput = getEl(ids.resultOutput);
+  if (resultOutput) resultOutput.innerText = "";
+});
+
+// PWA: Register Service Worker for offline support
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("./sw.js")
+      .then((reg) => console.log("SW registered"))
+      .catch((err) => console.log("SW registration failed", err));
+  });
+}
