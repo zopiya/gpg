@@ -34,7 +34,7 @@ const I18N = {
       "Security Warning: Public key file integrity check failed!",
   },
   zh: {
-    page_title: "安全消息加密 | GPG Online",
+    page_title: "安全讯息加密",
     step0_title: "接收者公钥",
     step0_waiting: "等待加载...",
     btn_details: "查看详情",
@@ -51,10 +51,10 @@ const I18N = {
     btn_copy: "复制密文",
     btn_email: "发送邮件",
     link_reset: "返回修改或重新编写",
-    footer: "由 OpenPGP.js 驱动 | 单文件安全工具",
+    footer: "由 OpenPGP.js 驱动",
     error_load_title: "无法自动加载公钥",
     error_load_desc:
-      "可能由于文件缺失或本地安全策略(CORS)限制。请手动加载 `public.asc` 文件。",
+      "可能由于文件缺失或本地安全策略限制。请手动加载 `public.asc` 文件。",
     btn_select_file: "📁 选择文件...",
     text_or_paste: "或直接粘贴到控制台",
     alert_no_openpgp: "找不到 openpgp.min.js 依赖文件。",
